@@ -267,8 +267,6 @@ function slabel(s){
 
 /* -- Cronograma -- */
 function buildCron(){
-  document.getElementById('cron-criticos').innerHTML =
-    CRON.criticos.map(t=>`<div class="cron-item">${t}</div>`).join('');
   document.getElementById('cron-realizar').innerHTML =
     CRON.a_realizar.map(t=>`<div class="prazo-row">
       <span class="pbadge${t.prazo==='27/05'?' urg':''}">${t.prazo}</span>
