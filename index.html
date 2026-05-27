@@ -49,23 +49,34 @@ header p{color:var(--muted2);margin-top:3px;font-size:.82rem}
 .sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
 
 /* TIMELINE */
-.tl-outer{overflow-x:auto;padding-bottom:8px}
-.tl-wrap{display:flex;align-items:flex-start;gap:0;position:relative;min-width:max-content;padding:8px 0 4px}
-.tl-wrap::before{content:'';position:absolute;top:18px;left:0;right:0;height:2px;background:var(--border);z-index:0}
-.tl-item{display:flex;flex-direction:column;align-items:center;min-width:120px;position:relative;z-index:1;cursor:pointer}
-.tl-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--bg);margin-bottom:6px;flex-shrink:0;transition:transform .18s}
-.tl-item:hover .tl-dot{transform:scale(1.3)}
-.tl-date{font-size:.72rem;font-weight:700;color:var(--muted2);margin-bottom:4px;white-space:nowrap}
-.tl-date.overdue{color:var(--vermelho)}
-.tl-date.today{color:var(--verde)}
-.tl-date.soon{color:var(--amarelo)}
-.tl-tasks-pop{display:none;position:absolute;top:50px;left:50%;transform:translateX(-50%);background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;min-width:220px;max-width:320px;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.5)}
-.tl-item:hover .tl-tasks-pop,.tl-item.open .tl-tasks-pop{display:block}
-.tl-pop-task{font-size:.75rem;color:var(--muted2);padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);line-height:1.35}
-.tl-pop-task:last-child{border-bottom:none}
-.tl-pop-task::before{content:'• ';color:var(--amarelo)}
-.tl-count{font-size:.65rem;background:rgba(59,130,246,.1);color:#93c5fd;border:1px solid rgba(59,130,246,.2);border-radius:999px;padding:1px 7px;margin-top:2px}
-.tl-empty{color:var(--muted);font-size:.8rem;padding:16px 0}
+.tl-strip{display:flex;gap:10px;overflow-x:auto;padding:2px 0 14px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.tl-strip::-webkit-scrollbar{height:4px}.tl-strip::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.tl-card{flex-shrink:0;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;min-width:148px;cursor:pointer;transition:all .18s;position:relative;border-top:3px solid var(--border)}
+.tl-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.tl-card.tl-overdue{border-top-color:var(--vermelho);background:rgba(239,68,68,.03)}
+.tl-card.tl-today{border-top-color:var(--verde);background:rgba(34,197,94,.03)}
+.tl-card.tl-soon{border-top-color:var(--amarelo);background:rgba(245,158,11,.03)}
+.tl-card.tl-future{border-top-color:var(--azul)}
+.tl-card-date{font-size:.7rem;font-weight:700;letter-spacing:.04em;color:var(--muted2);margin-bottom:8px;text-transform:uppercase}
+.tl-card.tl-overdue .tl-card-date{color:var(--vermelho)}
+.tl-card.tl-today   .tl-card-date{color:var(--verde)}
+.tl-card.tl-soon    .tl-card-date{color:var(--amarelo)}
+.tl-card.tl-future  .tl-card-date{color:var(--azul)}
+.tl-card-num{font-size:1.8rem;font-weight:800;line-height:1;margin-bottom:2px}
+.tl-card.tl-overdue .tl-card-num{color:var(--vermelho)}
+.tl-card.tl-today   .tl-card-num{color:var(--verde)}
+.tl-card.tl-soon    .tl-card-num{color:var(--amarelo)}
+.tl-card.tl-future  .tl-card-num{color:var(--azul)}
+.tl-card-sub{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.tl-breakdown{display:flex;flex-direction:column;gap:3px}
+.tl-bitem{font-size:.68rem;display:flex;align-items:center;gap:5px;color:var(--muted2)}
+.tl-pop{display:none;position:absolute;top:calc(100% + 8px);left:0;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;min-width:260px;max-width:340px;z-index:200;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+.tl-card.open .tl-pop{display:block}
+.tl-pop-title{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px}
+.tl-pop-item{font-size:.75rem;color:var(--muted2);padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);line-height:1.4;display:flex;align-items:flex-start;gap:6px}
+.tl-pop-item:last-child{border-bottom:none}
+.tl-pop-seg{font-size:.62rem;color:var(--muted);white-space:nowrap}
+.tl-empty{color:var(--muted);font-size:.82rem;padding:20px 0;text-align:center;width:100%}
 
 /* TIPO PILLS */
 .tipo-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px}
@@ -185,7 +196,7 @@ footer{text-align:center;padding:14px;color:var(--muted);font-size:.7rem;border-
 <!-- TIMELINE -->
 <div class="sec">
   <div class="sec-title">Timeline de Prazos</div>
-  <div class="tl-outer"><div class="tl-wrap" id="tl-inner"></div></div>
+  <div class="tl-strip" id="tl-inner"></div>
 </div>
 
 <!-- TIPO FILTER -->
@@ -255,10 +266,10 @@ function fmtDate(d){
 
 function buildTimeline(){
   const today = new Date(); today.setHours(0,0,0,0);
-  const soon  = new Date(today); soon.setDate(today.getDate()+7);
+  const soon  = new Date(today); soon.setDate(today.getDate()+14);
 
-  // Tarefas pendentes com data prevista
-  const tasks = TASKS.filter(t => t.status==='pendente' && t.data_prevista);
+  // TODOS os status com data prevista (exceto concluidos)
+  const tasks = TASKS.filter(t => t.data_prevista && t.status !== 'concluido');
   const byDate = {};
   tasks.forEach(t => {
     const d = parseDate(t.data_prevista);
@@ -269,25 +280,47 @@ function buildTimeline(){
   });
 
   const sorted = Object.values(byDate).sort((a,b)=>a.d-b.d);
+  const el = document.getElementById('tl-inner');
 
   if(sorted.length===0){
-    document.getElementById('tl-inner').innerHTML =
-      '<span class="tl-empty">Nenhuma tarefa pendente com data prevista cadastrada.</span>';
+    el.innerHTML = '<div class="tl-empty">Nenhuma tarefa com data prevista cadastrada.</div>';
     return;
   }
 
-  document.getElementById('tl-inner').innerHTML = sorted.map(({d,tasks})=>{
+  const statusOrder = ['pendente','melhoria','desligamento'];
+  const statusLabel = {pendente:'Pendentes',melhoria:'Melhorias',desligamento:'Desligamento'};
+  const statusColor = {pendente:'var(--amarelo)',melhoria:'var(--roxo)',desligamento:'var(--laranja)'};
+
+  el.innerHTML = sorted.map(({d, tasks})=>{
     const overdue = d < today;
     const isToday = d.getTime()===today.getTime();
     const isSoon  = !overdue && !isToday && d <= soon;
-    const cls     = overdue?'overdue':isToday?'today':isSoon?'soon':'';
-    const dotColor= overdue?'var(--vermelho)':isToday?'var(--verde)':isSoon?'var(--amarelo)':'var(--azul)';
-    const taskItems = tasks.map(t=>`<div class="tl-pop-task">${t.descricao||'—'} <span style="color:var(--muted);font-size:.65rem">(${t.segmento})</span></div>`).join('');
-    return `<div class="tl-item" onclick="this.classList.toggle('open')">
-      <div class="tl-dot" style="background:${dotColor}"></div>
-      <div class="tl-date ${cls}">${fmtDate(d)}</div>
-      <div class="tl-count">${tasks.length} tarefa${tasks.length>1?'s':''}</div>
-      <div class="tl-tasks-pop">${taskItems}</div>
+    const cls     = overdue?'tl-overdue':isToday?'tl-today':isSoon?'tl-soon':'tl-future';
+    const label   = overdue?'Atrasado':isToday?'Hoje':isSoon?'Proximo':'Futuro';
+
+    // Breakdown por status
+    const breakdown = statusOrder.map(s => {
+      const cnt = tasks.filter(t=>t.status===s).length;
+      if(!cnt) return '';
+      return `<div class="tl-bitem"><span class="dot ${s}"></span>${statusLabel[s]}: <b>${cnt}</b></div>`;
+    }).join('');
+
+    // Lista no popup
+    const popItems = tasks.map(t=>`
+      <div class="tl-pop-item">
+        <span class="dot ${t.status}" style="flex-shrink:0;margin-top:3px"></span>
+        <span>${t.descricao||'—'} <span class="tl-pop-seg">${t.segmento}</span></span>
+      </div>`).join('');
+
+    return `<div class="tl-card ${cls}" onclick="this.classList.toggle('open')">
+      <div class="tl-card-date">${fmtDate(d)} · ${label}</div>
+      <div class="tl-card-num">${tasks.length}</div>
+      <div class="tl-card-sub">tarefa${tasks.length>1?'s':''}</div>
+      <div class="tl-breakdown">${breakdown}</div>
+      <div class="tl-pop">
+        <div class="tl-pop-title">${fmtDate(d)} — ${tasks.length} tarefa${tasks.length>1?'s':''}</div>
+        ${popItems}
+      </div>
     </div>`;
   }).join('');
 }
