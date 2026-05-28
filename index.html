@@ -94,6 +94,9 @@ header p{color:var(--muted2);margin-top:3px;font-size:.82rem}
 .search-inp:focus{border-color:var(--azul)}
 .search-inp::placeholder{color:var(--muted)}
 .tbl-count{font-size:.72rem;color:var(--muted);white-space:nowrap}
+.prazo-btn{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:7px;padding:7px 14px;cursor:pointer;font-size:.78rem;font-weight:600;color:var(--muted2);transition:all .18s;white-space:nowrap}
+.prazo-btn:hover{border-color:var(--azul);color:var(--azul);background:rgba(59,130,246,.06)}
+.prazo-btn.prazo-active{border-color:var(--azul);color:var(--azul);background:rgba(59,130,246,.12);box-shadow:0 0 0 1px var(--azul)}
 
 /* ACCORDION TABLE */
 .tbl-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:32px}
@@ -209,6 +212,7 @@ footer{text-align:center;padding:14px;color:var(--muted);font-size:.7rem;border-
 <div class="sec">
   <div class="sec-title">Lista de Pendencias</div>
   <div class="toolbar">
+    <button class="prazo-btn" onclick="togglePrazo(this)">📅 Proximos 7 dias</button>
     <input class="search-inp" type="text" placeholder="Buscar descricao, segmento ou numero..." oninput="doSearch(this.value)">
     <span class="tbl-count" id="tbl-count"></span>
   </div>
@@ -235,7 +239,8 @@ const TASKS = [{"num": "1", "responsavel": "ENGETECNICA", "segmento": "5PPCLT-19
 const TIPOS = [{"name": "Finalizacoes", "faltam": 6, "total": 50, "concluido": 39, "pendente": 6, "melhoria": 5}, {"name": "Identificacoes", "faltam": 6, "total": 62, "concluido": 31, "pendente": 6, "melhoria": 25}, {"name": "Acabamento", "faltam": 3, "total": 28, "concluido": 25, "pendente": 3, "melhoria": 0}, {"name": "Ajustes Eletricos", "faltam": 0, "total": 20, "concluido": 2, "pendente": 0, "melhoria": 18}, {"name": "Correcoes e Revisoes", "faltam": 1, "total": 15, "concluido": 7, "pendente": 1, "melhoria": 7}, {"name": "Infraestrutura", "faltam": 2, "total": 23, "concluido": 11, "pendente": 2, "melhoria": 10}, {"name": "Limpeza", "faltam": 0, "total": 7, "concluido": 7, "pendente": 0, "melhoria": 0}, {"name": "Iluminacao", "faltam": 1, "total": 5, "concluido": 1, "pendente": 1, "melhoria": 3}, {"name": "Outros", "faltam": 2, "total": 17, "concluido": 7, "pendente": 2, "melhoria": 8}];
 
 let activeTipo   = null;
-let activeStatus = null;   // null = todos
+let activeStatus = null;
+let activePrazo  = false;   // filtro proximos 7 dias
 let searchTerm   = '';
 let selectedTask = null;
 let openGroups   = new Set(['pendente']);
@@ -337,12 +342,29 @@ function buildTipos(){
 }
 
 /* ---- Table (accordion) ---- */
+function isWithin7Days(str){
+  const d = parseDate(str);
+  if(!d) return false;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const limit = new Date(today); limit.setDate(today.getDate()+7);
+  return d >= today && d <= limit;
+}
+
 function getGroupTasks(statusKey){
   let tasks = TASKS.filter(t => t.status === statusKey);
-  if(activeTipo)   tasks = tasks.filter(t => t.tipo_grupo === activeTipo);
-  if(searchTerm)   tasks = tasks.filter(t =>
+  if(activeTipo)  tasks = tasks.filter(t => t.tipo_grupo === activeTipo);
+  if(activePrazo) tasks = tasks.filter(t => isWithin7Days(t.data_prevista));
+  if(searchTerm)  tasks = tasks.filter(t =>
     (t.descricao+' '+t.segmento+' '+t.num).toLowerCase().includes(searchTerm));
   return tasks;
+}
+
+/* ---- Filtro 7 dias ---- */
+function togglePrazo(btn){
+  activePrazo = !activePrazo;
+  btn.classList.toggle('prazo-active', activePrazo);
+  selectedTask = null;
+  buildTable();
 }
 
 function buildTable(){
@@ -391,9 +413,12 @@ function buildTable(){
           ? `<span style="font-size:.68rem;color:var(--muted2);background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:5px;padding:1px 6px">${t.area}</span>`
           : '<span style="color:var(--muted);font-size:.68rem">—</span>';
 
+        const justCell = (grp.key==='melhoria' && t.justificativa)
+          ? `<div style="font-size:.68rem;color:var(--muted);font-style:italic;margin-top:3px;line-height:1.3">${t.justificativa}</div>` : '';
+
         html += `<tr class="task-row${isSel?' selected':''}" onclick="selectTask('${t.num.replace(/'/g,"\\'")}',this)">
           <td class="td-num">${t.num}</td>
-          <td>${t.descricao||'—'}</td>
+          <td><div>${t.descricao||'—'}</div>${justCell}</td>
           <td class="td-seg">${t.segmento}</td>
           <td>${areaBadge}</td>
           <td><span class="tag tipo">${t.tipo_grupo||'—'}</span></td>
