@@ -37,10 +37,11 @@ header p{color:var(--muted2);margin-top:3px;font-size:.82rem}
 /* PROGRESS */
 .prog-wrap{max-width:1600px;margin:0 auto;padding:0 32px 20px}
 .prog-bar{height:8px;background:var(--border);border-radius:999px;overflow:hidden;display:flex;margin-top:6px}
-.prog-bar .g-ok  {background:var(--verde)}
-.prog-bar .g-pend{background:var(--amarelo)}
-.prog-bar .g-lib {background:var(--ciano)}
-.prog-bar .g-m   {background:var(--roxo)}
+.prog-bar .g-ok     {background:var(--verde)}
+.prog-bar .g-pend   {background:var(--amarelo)}
+.prog-bar .g-lib    {background:var(--ciano)}
+.prog-bar .g-m      {background:var(--roxo)}
+.prog-bar .g-critico{background:var(--laranja)}
 .prog-labels{display:flex;gap:16px;font-size:.72rem;color:var(--muted2);margin-top:5px;flex-wrap:wrap}
 .prog-labels span::before{content:'● ';font-size:.6rem}
 .prog-labels .lv{color:var(--verde)}.prog-labels .la{color:var(--amarelo)}.prog-labels .lr{color:var(--roxo)}
@@ -185,23 +186,25 @@ footer{text-align:center;padding:14px;color:var(--muted);font-size:.7rem;border-
   </div>
   <div class="kpi critico" onclick="filterKpi('desligamento',this)">
     <div class="n">31</div><div class="l">Desligamento</div>
-    <div class="sub">requer interrupcao</div>
+    <div class="sub">requer desligamento ou maior atencao</div>
   </div>
 </div>
 
 <!-- PROGRESS -->
 <div class="prog-wrap">
   <div class="prog-bar">
-    <div class="g-ok"   style="width:59.9%"></div>
-    <div class="g-pend" style="width:6.6%"></div>
-    <div class="g-lib"  style="width:15.0%"></div>
-    <div class="g-m"    style="width:18.5%"></div>
+    <div class="g-ok"   style="width:52.7%"></div>
+    <div class="g-pend" style="width:5.8%"></div>
+    <div class="g-lib"  style="width:13.2%"></div>
+    <div class="g-m"    style="width:16.3%"></div>
+    <div class="g-critico" style="width:12.0%"></div>
   </div>
   <div class="prog-labels">
-    <span class="lv">Concluidas 59.9%</span>
-    <span class="la">Pendentes 6.6%</span>
-    <span style="color:var(--ciano)">● Liberacao 15.0%</span>
-    <span class="lr">Melhorias 18.5%</span>
+    <span class="lv">Concluidas 52.7%</span>
+    <span class="la">Pendentes 5.8%</span>
+    <span style="color:var(--ciano)">● Liberacao 13.2%</span>
+    <span class="lr">Melhorias 16.3%</span>
+    <span style="color:var(--laranja)">● Desligamento 12.0%</span>
   </div>
 </div>
 
