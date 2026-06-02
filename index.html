@@ -178,14 +178,13 @@ footer{text-align:center;padding:14px;color:var(--muted);font-size:.7rem;border-
     <div class="n">15</div><div class="l">Pendentes</div>
   </div>
   <div class="kpi lib7"   onclick="filterKpi('liberacao',this)">
-    <div class="n">34</div><div class="l">Liberacao em 7 dias</div>
+    <div class="n">34</div><div class="l">Aguardando Liberacao O&M</div>
+  </div>
+  <div class="kpi critico" onclick="filterKpi('desligamento',this)">
+    <div class="n">31</div><div class="l">Aguardando Liberacao O&M / Desligamento</div>
   </div>
   <div class="kpi melhor" onclick="filterKpi('melhoria',this)">
     <div class="n">42</div><div class="l">Melhorias</div>
-  </div>
-  <div class="kpi critico" onclick="filterKpi('desligamento',this)">
-    <div class="n">31</div><div class="l">Desligamento</div>
-    <div class="sub">requer desligamento ou maior atencao</div>
   </div>
 </div>
 
@@ -256,16 +255,16 @@ let selectedTask = null;
 let openGroups   = new Set(['pendente']);
 
 const STATUS_GROUPS = [
-  { key:'pendente',     label:'Pendentes',         color:'var(--amarelo)', dot:'pendente'     },
-  { key:'liberacao',    label:'Liberacao em 7 dias',color:'var(--ciano)',   dot:'liberacao'    },
-  { key:'melhoria',     label:'Melhorias',         color:'var(--roxo)',    dot:'melhoria'     },
-  { key:'desligamento', label:'Desligamento',      color:'var(--laranja)', dot:'desligamento' },
-  { key:'concluido',    label:'Concluidas',        color:'var(--verde)',   dot:'concluido'    },
+  { key:'pendente',     label:'Pendentes',                          color:'var(--amarelo)', dot:'pendente'     },
+  { key:'liberacao',    label:'Aguardando Liberacao O&M',           color:'var(--ciano)',   dot:'liberacao'    },
+  { key:'desligamento', label:'Aguardando Liberacao O&M / Deslig.', color:'var(--laranja)', dot:'desligamento' },
+  { key:'melhoria',     label:'Melhorias',                         color:'var(--roxo)',    dot:'melhoria'     },
+  { key:'concluido',    label:'Concluidas',                        color:'var(--verde)',   dot:'concluido'    },
 ];
 
 function slabel(s){
   return {concluido:'Concluida',pendente:'Pendente',melhoria:'Melhoria',
-          desligamento:'Desligamento',liberacao:'Liberacao 7 dias'}[s]||s;
+          desligamento:'Ag. Liberacao/Deslig.',liberacao:'Ag. Liberacao O&M'}[s]||s;
 }
 
 /* ---- Timeline ---- */
@@ -304,9 +303,9 @@ function buildTimeline(){
     return;
   }
 
-  const statusOrder = ['pendente','liberacao','melhoria','desligamento'];
-  const statusLabel = {pendente:'Pendentes',liberacao:'Liberacao 7d',melhoria:'Melhorias',desligamento:'Desligamento'};
-  const statusColor = {pendente:'var(--amarelo)',liberacao:'var(--ciano)',melhoria:'var(--roxo)',desligamento:'var(--laranja)'};
+  const statusOrder = ['pendente','liberacao','desligamento','melhoria'];
+  const statusLabel = {pendente:'Pendentes',liberacao:'Ag. Liberacao O&M',desligamento:'Ag. Liberacao/Deslig.',melhoria:'Melhorias'};
+  const statusColor = {pendente:'var(--amarelo)',liberacao:'var(--ciano)',desligamento:'var(--laranja)',melhoria:'var(--roxo)'};
 
   el.innerHTML = sorted.map(({d, tasks})=>{
     const overdue = d < today;
